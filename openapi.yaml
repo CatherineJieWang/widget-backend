@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Weather Forecast Page
+paths:
+  /:
+    get:
+      summary: home
+      description: A home page.
+      tags:
+        - Home
+      responses:
+        "200":
+          description: A home reponse
+  /weather/{cityId}:
+    get:
+      summary: get weather by cityId
+      description: get weather by cityId
+      tags:
+        - Weather
+      responses:
+        "200":
+          description: A weather reponse
+  /location:
+    get:
+      summary: get locations by city
+      description: get locations by city
+      tags:
+        - Location
+      responses:
+        "200":
+          description: A location reponse
