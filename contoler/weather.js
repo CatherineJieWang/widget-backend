@@ -1,8 +1,10 @@
 const assert = require("assert");
 const thirdPartyApi = require('./thirdpartyApi')
 
-function getLWeather(ctx) {
-    const { cityId } = ctx.param;
+function getWeather(ctx) {
+  console.log('tstc',ctx)
+  const {cityId} = ctx.params
+  console.log('ctx',)
     assert(cityId, "city must exist!");
     const res = fetch(`${thirdPartyApi.WEATHER_URL}/weathers?id=${cityId}`)
       .then((res) => res.json())
@@ -16,3 +18,6 @@ function getLWeather(ctx) {
       ctx.status = 404;
     }
   }
+
+
+  module.exports = {getWeather};

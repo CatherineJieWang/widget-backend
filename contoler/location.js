@@ -1,6 +1,5 @@
 const assert = require("assert");
 const thirdPartyApi = require('./thirdpartyApi')
-
 function getLocation(ctx) {
   const { city } = ctx.query;
   assert(city, "city must exist!");
@@ -16,3 +15,4 @@ function getLocation(ctx) {
     ctx.status = 404;
   }
 }
+module.exports = {getLocation};
