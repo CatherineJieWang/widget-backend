@@ -1,22 +1,17 @@
-
 "use strict";
-const Router = require("koa-router");
-const router = new Router();
-const weatherControler = require('../controler/weather')
-const locationControler = require('../controler/location')
+const express = require("express");
+const router = new express.Router();
+const weatherControler = require("../controler/weather");
+const locationControler = require("../controler/location");
 
-router.get("/", async (ctx) => {
-  ctx.body = "Hello";
+router.get("/", async function () {
+  console.log("Hello Here");
 });
 
 //v1
-router.get("/location", async (ctx) => {
-    locationControler.getLocation(ctx);
-});
+router.get("/location", locationControler.getLocation);
+router.get("/geolocation", locationControler.getGeoLocation);
 
-router.get("/weather/:cityId", async (ctx) => {
-    weatherControler.getWeather(ctx);
-});
+router.get("/weather/:cityId", weatherControler.getWeather);
 
 module.exports = router;
-

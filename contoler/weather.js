@@ -13,22 +13,16 @@ async function getWeatherFromThirdParty(cityId) {
   }
 }
 
-
-async function getWeather(ctx) {
-  // console.log("tstc", ctx);
-  // const {cityId} = ctx.params
-  const cityId = 44418;
+async function getWeather(req, res) {
+  const { cityId } = req.params;
   assert(cityId, "city must exist!");
-  const res = await getWeatherFromThirdParty(cityId);
-  if (res) {
-    console.log('here?')
-    ctx.body = res;
-  } else {
-    console.log('error here?')
-    ctx.body = {
-      message: `${cityId} not found`,
-    };
-    ctx.status = 404;
+  try {
+    const response = await getWeatherFromThirdParty(cityId);
+    if (response) {
+      res.send(response);
+    }
+  } catch (e) {
+    res.status(404).send(e);
   }
 }
 

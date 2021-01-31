@@ -1,10 +1,11 @@
 const assert = require("assert");
-const thirdPartyApi = require('./thirdpartyApi')
+const thirdPartyApi = require("./thirdpartyApi");
+const axios = require("axios");
 
-
-async function getLocationFromThirdParty(city) {
+async function getLocationFromThirdParty(param) {
   try {
-    const response = await axios.get(`${thirdPartyApi.LOCATION_URL}/?query=${city}`);
+    const response = await axios.get(`${thirdPartyApi.LOCATION_URL}/${param}`);
+
     if (response.data) {
       return response.data;
     }
@@ -13,17 +14,46 @@ async function getLocationFromThirdParty(city) {
   }
 }
 
-async function getLocation(ctx) {
-  const { city } = ctx.query;
-  assert(city, "city must exist!");
-  const res = await getLocationFromThirdParty(city)
-  if (res) {
-    ctx.body = res;
-  } else {
-    ctx.body = {
-      message: `${city} not found`,
-    };
-    ctx.status = 404;
+async function getGeoLocationFromThirdParty() {
+  try {
+    const response = await axios.get(thirdPartyApi.GEOLOCATION_URL);
+    if (response.data) {
+      return response.data.split("(")[1].split(")")[0];
+    }
+  } catch (error) {
+    console.error("Error at Get Weather", error);
   }
 }
-module.exports = {getLocation};
+
+async function getLocation(req, res) {
+  const { query, lattlong } = req.query;
+  let searchParam = "";
+  console.log('test',req.query ,query, lattlong)
+  if (query) {
+    searchParam = `?query=${query}`;
+  }
+  if (lattlong) {
+    searchParam = `?lattlong=${lattlong}`;
+  }
+
+  try {
+    const response = await getLocationFromThirdParty(searchParam);
+    if (response) {
+      res.send(response);
+    }
+  } catch (e) {
+    res.status(404).send(e);
+  }
+}
+async function getGeoLocation(req, res) {
+  try {
+    const response = await getGeoLocationFromThirdParty();
+    if (response) {
+      res.send(response);
+    }
+  } catch (e) {
+    res.status(404).send(e);
+  }
+}
+
+module.exports = { getLocation, getGeoLocation };

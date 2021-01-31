@@ -21,7 +21,7 @@ paths:
       responses:
         "200":
           description: A weather reponse
-  /location:
+  /location/?query = {city}:
     get:
       summary: get locations by city
       description: get locations by city
@@ -30,3 +30,21 @@ paths:
       responses:
         "200":
           description: A location reponse
+  /location/?lattlong = {lattlong}:
+    get:
+      summary: get locations by lattlong
+      description: get locations by lattlong
+      tags:
+        - Location
+      responses:
+        "200":
+          description: A location reponse
+  /geolocation:
+    get:
+      summary: get Geolocations
+      description: get Geolocations
+      tags:
+        - Location
+      responses:
+        "200":
+          description: A Geolocations reponse
