@@ -1,17 +1,17 @@
 "use strict";
 const express = require("express");
 const router = new express.Router();
-const weatherControler = require("../controler/weather");
-const locationControler = require("../controler/location");
+const weatherController = require("../controller/weather");
+const locationController = require("../controller/location");
 
 router.get("/", async function () {
   console.log("Hello Here");
 });
 
 //v1
-router.get("/location", locationControler.getLocation);
-router.get("/geolocation", locationControler.getGeoLocation);
+router.get("/location", locationController.getLocation);
+router.get("/geolocation", locationController.getGeoLocation);
 
-router.get("/weather/:cityId", weatherControler.getWeather);
+router.get("/weather/:cityId", weatherController.getWeather);
 
 module.exports = router;

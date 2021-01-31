@@ -28,7 +28,6 @@ async function getGeoLocationFromThirdParty() {
 async function getLocation(req, res) {
   const { query, lattlong } = req.query;
   let searchParam = "";
-  console.log('test',req.query ,query, lattlong)
   if (query) {
     searchParam = `?query=${query}`;
   }
