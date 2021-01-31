@@ -1,8 +1,9 @@
+
 "use strict";
 const Router = require("koa-router");
 const router = new Router();
-const weatherControler = require('../contoler/weather')
-const locationControler = require('../contoler/location')
+const weatherControler = require('../controler/weather')
+const locationControler = require('../controler/location')
 
 router.get("/", async (ctx) => {
   ctx.body = "Hello";

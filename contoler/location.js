@@ -1,11 +1,22 @@
 const assert = require("assert");
 const thirdPartyApi = require('./thirdpartyApi')
-function getLocation(ctx) {
+
+
+async function getLocationFromThirdParty(city) {
+  try {
+    const response = await axios.get(`${thirdPartyApi.LOCATION_URL}/?query=${city}`);
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Error at Get Weather", error);
+  }
+}
+
+async function getLocation(ctx) {
   const { city } = ctx.query;
   assert(city, "city must exist!");
-  const res = fetch(`${thirdPartyApi.LOCATION_URL}/?query=${city}`)
-    .then((res) => res.json())
-    .then((data) => data);
+  const res = await getLocationFromThirdParty(city)
   if (res) {
     ctx.body = res;
   } else {

@@ -1,23 +1,35 @@
 const assert = require("assert");
-const thirdPartyApi = require('./thirdpartyApi')
+const thirdPartyApi = require("./thirdpartyApi");
+const axios = require("axios");
 
-function getWeather(ctx) {
-  console.log('tstc',ctx)
-  const {cityId} = ctx.params
-  console.log('ctx',)
-    assert(cityId, "city must exist!");
-    const res = fetch(`${thirdPartyApi.WEATHER_URL}/weathers?id=${cityId}`)
-      .then((res) => res.json())
-      .then((data) => data);
-    if (res) {
-      ctx.body = res;
-    } else {
-      ctx.body = {
-        message: `${cityId} not found`,
-      };
-      ctx.status = 404;
+async function getWeatherFromThirdParty(cityId) {
+  try {
+    const response = await axios.get(`${thirdPartyApi.WEATHER_URL}/${cityId}`);
+    if (response.data) {
+      return response.data.consolidated_weather;
     }
+  } catch (error) {
+    console.error("Error at Get Weather", error);
   }
+}
 
 
-  module.exports = {getWeather};
+async function getWeather(ctx) {
+  // console.log("tstc", ctx);
+  // const {cityId} = ctx.params
+  const cityId = 44418;
+  assert(cityId, "city must exist!");
+  const res = await getWeatherFromThirdParty(cityId);
+  if (res) {
+    console.log('here?')
+    ctx.body = res;
+  } else {
+    console.log('error here?')
+    ctx.body = {
+      message: `${cityId} not found`,
+    };
+    ctx.status = 404;
+  }
+}
+
+module.exports = { getWeather };
